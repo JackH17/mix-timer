@@ -8,6 +8,9 @@ const Timer = () => {
 
     const progressBar = useRef();
     const planet = useRef();
+    const planetTwo = useRef();
+    const planetSpotOne = useRef();
+    const moon = useRef();
 
     const [stageWidth, setStageWidth] = useState(window.innerWidth);
     const [stageHeight, setStageHeight] = useState(window.innerHeight);
@@ -20,9 +23,9 @@ const Timer = () => {
 
     const [currentSession, setCurrentSession] = useState('mix');
 
-    const [mixSessionLength, setMixSessionLength] = useState(360);
-    const [breakSessionLength, setBreakSessionLength] = useState(60);
-    const [cleanseSessionLength, setCleanseSessionLength] = useState(60);
+    const [mixSessionLength, setMixSessionLength] = useState(600);
+    const [breakSessionLength, setBreakSessionLength] = useState(20);
+    const [cleanseSessionLength, setCleanseSessionLength] = useState(20);
 
     const [sessionRemainder, setSessionRemainder] = useState();
 
@@ -81,6 +84,11 @@ const Timer = () => {
             progressBar.current.attrs.width = ((timeBarWidth * progress)/100);
 
             planet.current.rotation((progress/100)*360);
+            planetSpotOne.current.rotation((progress/100)*360);
+            planetTwo.current.rotation((progress/100)*360);
+            moon.current.rotation((progress/100)*360);
+
+            planetTwo.current.attrs.x = (widthPercentage(progress));
 
         }, progressBar.current.getLayer());
       
@@ -99,6 +107,7 @@ const Timer = () => {
     const heightPercentage = (height) => {   
         return Math.floor(stageHeight / (100 / height))
     };
+
 
     const handleEngageClick = () => {
         setEngaged(!engaged)
@@ -146,9 +155,12 @@ const Timer = () => {
             <Stage ref={stageRef} width={stageWidth} height={stageHeight}>
                 <Layer>
                     <Rect width={stageWidth} height={stageHeight} fill='black'/>
+                    <Circle ref={planetTwo} x={widthPercentage(10)} y={heightPercentage(30)} radius={widthPercentage(3)} shadowColor="blue" shadowBlur={widthPercentage(20)} fillLinearGradientStartPoint={{ x: -50, y: -50 }} fillLinearGradientEndPoint={{ x: 50, y: 50 }} fillLinearGradientColorStops={[0, 'purple', 1, 'pink']} opacity={engaged ? 1 : 0}/>
                     <Circle ref={planet} x={widthPercentage(50)} y={heightPercentage(105)} radius={widthPercentage(40)} shadowColor="blue" shadowBlur={widthPercentage(20)} fillLinearGradientStartPoint={{ x: -50, y: -50 }} fillLinearGradientEndPoint={{ x: 50, y: 50 }} fillLinearGradientColorStops={[0, 'purple', 1, 'pink']}/>
+                    <Circle ref={planetSpotOne} x={widthPercentage(50)} y={heightPercentage(105)} offsetX={widthPercentage(20)} offsetY={heightPercentage(40)} radius={widthPercentage(4)} shadowColor="blue" shadowBlur={widthPercentage(20)} fill='purple'/>
+                    <Circle ref={moon} x={widthPercentage(50)} y={heightPercentage(105)} offsetX={widthPercentage(20)} offsetY={heightPercentage(100)} radius={widthPercentage(4)} shadowColor="blue" shadowBlur={widthPercentage(20)} fillLinearGradientStartPoint={{ x: 2, y: 5 }} fillLinearGradientEndPoint={{ x: 2, y: 50 }} fillLinearGradientColorStops={[0, 'white', 1, 'yellow']}/>
                     <Rect x={widthPercentage(40)} y={heightPercentage(25)} width={widthPercentage(20)} height={heightPercentage(10)} fill={'red'} onClick={handleEngageClick}/>
-                    <Rect x={widthPercentage(20)} y={heightPercentage(45)} width={timeBarWidth} height={heightPercentage(10)} fill={'blue'}/>
+                    <Rect x={widthPercentage(20)} y={heightPercentage(45)} width={timeBarWidth} height={heightPercentage(10)} fill={'blue'} shadowColor="green" shadowBlur={widthPercentage(20)}/>
                     <Rect ref={progressBar} x={widthPercentage(20)} y={heightPercentage(45)} width={0} height={heightPercentage(10)} fill={'red'}/>
                     <Text text={`${currentSession}`} fill={'white'} x={widthPercentage(47)} y={heightPercentage(40)} fontSize={widthPercentage(2)} opacity={engaged ? 1 : 0}/>
                     <Text text={`${remianingTime}`} fill={'white'} x={widthPercentage(47)} y={heightPercentage(65)} fontSize={widthPercentage(2)} opacity={engaged ? 1 : 0}/>
