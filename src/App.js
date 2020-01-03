@@ -1,24 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import './App.css';
+import Home from './Containers/Home';
+import Timer from './Components/Timer';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          <Route exact path="/" render={(props) => <Home {...props}/>}/>
+          <Route exact path="/timer" render={(props) => <Timer {...props}/>}/>
+        </Switch>
+      </Router>
     </div>
   );
 }
